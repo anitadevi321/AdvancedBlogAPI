@@ -14,7 +14,8 @@ class PostController extends Controller
     //user registration
     public function store(Request $request)
     {
-    $user_id= $request->userid;
+        try{
+         $user_id= $request->userid;
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string|max:255',
@@ -31,85 +32,129 @@ class PostController extends Controller
             'message' => 'Add Content successful',
         ],200);
     }
+    catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'message' => 'An error occured post',
+            'error' => $e->getMessage()
+        ], 400);
+    }
+    }
 
     //get all post
     public function index(){
-        $posts= post::all();
-        if(post::count() > 0)
-        {
-            return response()->json([
-                'status' => true,
-                'message' => 'post',
-                'data' => $posts,
-                //'id' => auth()->user()->id
-            ],200);
+        try{
+            $posts= post::all();
+            if(post::count() > 0)
+            {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'post',
+                    'data' => $posts,
+                    //'id' => auth()->user()->id
+                ],200);
+            }
+            else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'no post',
+                    'data' => [],
+                ],200);
+            }
         }
-        else{
+        catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'no post',
-                'data' => [],
-            ],200);
+                'message' => 'An error occured post',
+                'error' => $e->getMessage()
+            ], 400);
         }
     }
 
     //get single post
     public function show($id){
-        $post = post::find($id);
-        if($post)
-        {
-            return response()->json([
-                'status' => true,
-                'message' => 'post',
-                'data' => $user,
-            ],200);
+        try{
+            $post = post::find($id);
+            if($post)
+            {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'post',
+                    'data' => $user,
+                ],200);
+            }
+            else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid user',
+                    'data' => [],
+                ],200);
+            }
         }
-        else{
+        catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid user',
-                'data' => [],
-            ],200);
+                'message' => 'An error occured post',
+                'error' => $e->getMessage()
+            ], 400);
         }
     }
 
     //update post 
     public function update(Request $request)
     {
-        $postid= $request->postid;
-        
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string|max:255',
-            'postid' => 'required|integer|exists:posts,id',
-        ]);
-        post::where('id', $postid)->update([
-            'title' => $request->title,
-            'content' => $request->content
-        ]);
-        return response()->json([
-            'status' => true,
-            'message' => 'update post successfuly',
-        ],200);
+        try{
+            $postid= $request->postid;
+            
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'content' => 'required|string|max:255',
+                'postid' => 'required|integer|exists:posts,id',
+            ]);
+            post::where('id', $postid)->update([
+                'title' => $request->title,
+                'content' => $request->content
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'update post successfuly',
+            ],200);
+        }
+        catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occured post',
+                'error' => $e->getMessage()
+            ], 400);
+        }
     }
 
     public function destroy(Post $post, $id)
     {
-        $post = post::find($id);
-        if($post)
-        {
-            $post->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'delete post successfuly',
-            ],200);
+        try{
+            $post = post::find($id);
+            if($post)
+            {
+                $post->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'delete post successfuly',
+                ],200);
+            }
+            else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid user',
+                    'data' => [],
+                ],200);
+            }
         }
-        else{
+        catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid user',
-                'data' => [],
-            ],200);
+                'message' => 'An error occured post',
+                'error' => $e->getMessage()
+            ], 400);
         }
     }
 }
