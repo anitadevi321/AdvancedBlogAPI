@@ -55,22 +55,22 @@ class CommentController extends Controller
     {
         try{
         $count = Comment::where('post_id', $post_id)->count();
-       if($count > 0)
-       {
-            $comment= Comment::where('post_id', $post_id)->get();
+        if($count > 0)
+        {
+                $comment= Comment::where('post_id', $post_id)->get();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'comments',
+                    'data' => $comment
+                ],200);
+        }
+        else{
             return response()->json([
-                'status' => true,
-                'message' => 'comments',
-                'data' => $comment
+                'status' => false,
+                'message' => 'no comment',
+                'data' => []
             ],200);
-       }
-       else{
-        return response()->json([
-            'status' => false,
-            'message' => 'no comment',
-            'data' => []
-        ],200);
-       }
+        }
     }
     catch (\Exception $e) {
         return response()->json([
