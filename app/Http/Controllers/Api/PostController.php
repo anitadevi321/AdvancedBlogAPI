@@ -5,31 +5,33 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\post;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class PostController extends Controller
 {
-    public function register(Request $request)
+    public function store(Request $request, Post $post)
     {
     //user registration
+    return $request; die;
+    $user_id= $request->userid;
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string|max:255',
+            'userid' => 'required|integer|exists:users,id',
         ]);
 
         $user = post::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'user_id' => $request->userid,
         ]);
 
         return response()->json([
             'status' => true,
-            'message' => 'registration successful',
-            'token' => $user->createToken('api-token')->plainTextToken
+            'message' => 'Add Content successful',
+           // 'token' => $user->createToken('api-token')->plainTextToken
         ],200);
     }
 }
