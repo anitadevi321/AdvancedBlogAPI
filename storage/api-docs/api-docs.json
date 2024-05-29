@@ -2,16 +2,13 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Laravel API",
-        "description": "API Documentation for Laravel API",
-        "contact": {
-            "email": "admin@example.com"
-        },
-        "version": "2.0.0"
+        "description": "API documentation for the Laravel project",
+        "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api",
-            "description": "Local server"
+            "url": "http://127.0.0.1:8000/api",
+            "description": "API v1"
         }
     ],
     "paths": {
@@ -72,11 +69,11 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "user@example.com"
+                                        "example": "anita@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "password123"
+                                        "example": "anita321"
                                     }
                                 },
                                 "type": "object"
@@ -112,38 +109,31 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "User profile",
+                "summary": "Fetch authenticated user details",
                 "operationId": "149a452cdef347fe74d1bbbd96410ce8",
-                "parameters": [
-                    {
-                        "name": "X-CSRF-TOKEN",
-                        "in": "header",
-                        "description": "Bearer {token}",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "your-csrf-token-here"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
-                        "description": "Success",
+                        "description": "User details",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "id": {
-                                            "type": "integer",
-                                            "example": 1
+                                            "type": "integer"
                                         },
                                         "name": {
-                                            "type": "string",
-                                            "example": "John Doe"
+                                            "type": "string"
                                         },
                                         "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
                                             "type": "string",
-                                            "example": "john.doe@example.com"
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
                                         }
                                     },
                                     "type": "object"
@@ -151,14 +141,31 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad Request"
-                    },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
 }

@@ -7,23 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-/**
- * @OA\OpenApi(
- *     @OA\Info(
- *         version="2.0.0",
- *         title="Laravel API",
- *         description="API Documentation for Laravel API",
- *         @OA\Contact(
- *             email="admin@example.com"
- *         )
- *     ),
- *     @OA\Server(
- *         url="http://localhost:8000/api",
- *         description="Local server"
- *     ),
-  
- * )
- */
+
+ /**
+     * @OA\Info(
+     *     title="Laravel API",
+     *     version="1.0.0",
+     *     description="API documentation for the Laravel project"
+     * )
+     *
+     * @OA\Server(
+     *     url="http://127.0.0.1:8000/api",
+     *     description="API v1"
+     * )
+     */
 class ApiController extends Controller
 {
     /**
@@ -88,8 +84,8 @@ class ApiController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="email", type="string", example="user@example.com"),
-     *             @OA\Property(property="password", type="string", example="password123")
+     *             @OA\Property(property="email", type="string", example="anita@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="anita321")
      *         )
      *     ),
      *     @OA\Response(
@@ -135,35 +131,27 @@ class ApiController extends Controller
         }
     }
 
-
-    /**
+ /**
  * @OA\Get(
  *     path="/profile",
- *     summary="User profile",
  *     tags={"User"},
- *   
- *     @OA\Parameter(
- *         name="X-CSRF-TOKEN",
- *         in="header",
- *         required=true,
- *         description="Bearer {token}",
- *         @OA\Schema(
- *             type="string",
- *             example="your-csrf-token-here"
+ *     summary="Fetch authenticated user details",
+ *     security={{"bearerAuth":{}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="User details",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="id", type="integer"),
+ *             @OA\Property(property="name", type="string"),
+ *             @OA\Property(property="email", type="string"),
+ *             @OA\Property(property="created_at", type="string", format="date-time"),
+ *             @OA\Property(property="updated_at", type="string", format="date-time"),
  *         )
  *     ),
  *     @OA\Response(
- *         response=200,
- *         description="Success",
- *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(property="id", type="integer", example=1),
- *             @OA\Property(property="name", type="string", example="John Doe"),
- *             @OA\Property(property="email", type="string", example="john.doe@example.com")
- *         )
- *     ),
- *     @OA\Response(response=400, description="Bad Request"),
- *     @OA\Response(response=401, description="Unauthorized")
+ *         response=401,
+ *         description="Unauthenticated"
+ *     )
  * )
  */
 
