@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * @OA\OpenApi(
  *     @OA\Info(
- *         version="1.0.0",
+ *         version="2.0.0",
  *         title="Laravel API",
  *         description="API Documentation for Laravel API",
  *         @OA\Contact(
@@ -83,7 +83,7 @@ class ApiController extends Controller
      *     summary="Login user",
      *     description="Authenticate user and return a token",
      *     operationId="loginUser",
-     *     tags={"Auth"},
+     *     tags={"User"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
